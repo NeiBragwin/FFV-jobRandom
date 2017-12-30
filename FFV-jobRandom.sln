@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFV-jobRandom", "FFV-jobRandom\FFV-jobRandom.csproj", "{DEAB5443-986E-44F1-9793-297873332941}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DEAB5443-986E-44F1-9793-297873332941}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEAB5443-986E-44F1-9793-297873332941}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEAB5443-986E-44F1-9793-297873332941}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEAB5443-986E-44F1-9793-297873332941}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D138F16D-076E-4E6C-A84B-FB65B7CB0AB4}
+	EndGlobalSection
+EndGlobal
