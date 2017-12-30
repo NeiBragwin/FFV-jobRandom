@@ -1,2 +1,2 @@
 # FFV-jobRandom
-Randomize jobs in Final Fantasy V with your save RAM.
+Randomize jobs in SNES Final Fantasy V with your save RAM.
