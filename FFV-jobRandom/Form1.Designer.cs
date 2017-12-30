@@ -36,10 +36,19 @@
             this.OpenSRMbutton = new System.Windows.Forms.Button();
             this.RestoreROMbutton = new System.Windows.Forms.Button();
             this.RestoreSRMbutton = new System.Windows.Forms.Button();
+            this.CharacterFirstBox = new System.Windows.Forms.PictureBox();
+            this.CharacterSecondBox = new System.Windows.Forms.PictureBox();
+            this.CharacterThirdBox = new System.Windows.Forms.PictureBox();
+            this.CharacterFourthBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.CharacterFirstBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CharacterSecondBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CharacterThirdBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CharacterFourthBox)).BeginInit();
             this.SuspendLayout();
             // 
             // patchROMbutton
             // 
+            this.patchROMbutton.Enabled = false;
             this.patchROMbutton.Location = new System.Drawing.Point(316, 12);
             this.patchROMbutton.Name = "patchROMbutton";
             this.patchROMbutton.Size = new System.Drawing.Size(75, 23);
@@ -82,15 +91,18 @@
             // 
             // OpenSRMbutton
             // 
+            this.OpenSRMbutton.Enabled = false;
             this.OpenSRMbutton.Location = new System.Drawing.Point(235, 78);
             this.OpenSRMbutton.Name = "OpenSRMbutton";
             this.OpenSRMbutton.Size = new System.Drawing.Size(75, 23);
             this.OpenSRMbutton.TabIndex = 5;
             this.OpenSRMbutton.Text = "Open SRM";
             this.OpenSRMbutton.UseVisualStyleBackColor = true;
+            this.OpenSRMbutton.Click += new System.EventHandler(this.OpenSRMbutton_Click);
             // 
             // RestoreROMbutton
             // 
+            this.RestoreROMbutton.Enabled = false;
             this.RestoreROMbutton.Location = new System.Drawing.Point(235, 41);
             this.RestoreROMbutton.Name = "RestoreROMbutton";
             this.RestoreROMbutton.Size = new System.Drawing.Size(156, 23);
@@ -101,6 +113,7 @@
             // 
             // RestoreSRMbutton
             // 
+            this.RestoreSRMbutton.Enabled = false;
             this.RestoreSRMbutton.Location = new System.Drawing.Point(316, 78);
             this.RestoreSRMbutton.Name = "RestoreSRMbutton";
             this.RestoreSRMbutton.Size = new System.Drawing.Size(75, 23);
@@ -108,11 +121,47 @@
             this.RestoreSRMbutton.Text = "Restore SRM";
             this.RestoreSRMbutton.UseVisualStyleBackColor = true;
             // 
+            // CharacterFirstBox
+            // 
+            this.CharacterFirstBox.Location = new System.Drawing.Point(15, 119);
+            this.CharacterFirstBox.Name = "CharacterFirstBox";
+            this.CharacterFirstBox.Size = new System.Drawing.Size(84, 126);
+            this.CharacterFirstBox.TabIndex = 8;
+            this.CharacterFirstBox.TabStop = false;
+            // 
+            // CharacterSecondBox
+            // 
+            this.CharacterSecondBox.Location = new System.Drawing.Point(112, 119);
+            this.CharacterSecondBox.Name = "CharacterSecondBox";
+            this.CharacterSecondBox.Size = new System.Drawing.Size(84, 126);
+            this.CharacterSecondBox.TabIndex = 8;
+            this.CharacterSecondBox.TabStop = false;
+            // 
+            // CharacterThirdBox
+            // 
+            this.CharacterThirdBox.Location = new System.Drawing.Point(210, 119);
+            this.CharacterThirdBox.Name = "CharacterThirdBox";
+            this.CharacterThirdBox.Size = new System.Drawing.Size(84, 126);
+            this.CharacterThirdBox.TabIndex = 8;
+            this.CharacterThirdBox.TabStop = false;
+            // 
+            // CharacterFourthBox
+            // 
+            this.CharacterFourthBox.Location = new System.Drawing.Point(307, 119);
+            this.CharacterFourthBox.Name = "CharacterFourthBox";
+            this.CharacterFourthBox.Size = new System.Drawing.Size(84, 126);
+            this.CharacterFourthBox.TabIndex = 8;
+            this.CharacterFourthBox.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(406, 138);
+            this.ClientSize = new System.Drawing.Size(406, 280);
+            this.Controls.Add(this.CharacterFourthBox);
+            this.Controls.Add(this.CharacterThirdBox);
+            this.Controls.Add(this.CharacterSecondBox);
+            this.Controls.Add(this.CharacterFirstBox);
             this.Controls.Add(this.RestoreSRMbutton);
             this.Controls.Add(this.RestoreROMbutton);
             this.Controls.Add(this.OpenSRMbutton);
@@ -125,6 +174,10 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "FFV Job Randomizer";
+            ((System.ComponentModel.ISupportInitialize)(this.CharacterFirstBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CharacterSecondBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CharacterThirdBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CharacterFourthBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -140,6 +193,10 @@
         private System.Windows.Forms.Button OpenSRMbutton;
         private System.Windows.Forms.Button RestoreROMbutton;
         private System.Windows.Forms.Button RestoreSRMbutton;
+        private System.Windows.Forms.PictureBox CharacterFirstBox;
+        private System.Windows.Forms.PictureBox CharacterSecondBox;
+        private System.Windows.Forms.PictureBox CharacterThirdBox;
+        private System.Windows.Forms.PictureBox CharacterFourthBox;
     }
 }
 
