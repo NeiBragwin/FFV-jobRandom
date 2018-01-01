@@ -56,39 +56,26 @@ namespace FFV_jobRandom
                     CharacterPosition[3] = 0x15F0;
                     break;
             }
+
             for (int i = 0; i < 4; i++)
             {
-                SRMfile.Seek(CharacterPosition[i], SeekOrigin.Begin);
-                switch (SRMfile.ReadByte())
+                SRMfile.Position = CharacterPosition[i];
+                string BinaryValue = Convert.ToString(SRMfile.ReadByte(), 2).PadLeft(4, '0').Remove(0, 1);
+                switch (BinaryValue)
                 {
-                    case 0:
-                    case 8:
-                    case 16:
-                    case 128:
+                    case "000":
                         CurrentCharacters[i] = Bartz;
                         break;
-                    case 1:
-                    case 9:
-                    case 17:
-                    case 129:
+                    case "001":
                         CurrentCharacters[i] = Lenna;
                         break;
-                    case 2:
-                    case 10:
-                    case 18:
-                    case 130:
+                    case "010":
                         CurrentCharacters[i] = Galuf;
                         break;
-                    case 3:
-                    case 11:
-                    case 19:
-                    case 131:
+                    case "011":
                         CurrentCharacters[i] = Faris;
                         break;
-                    case 4:
-                    case 12:
-                    case 20:
-                    case 132:
+                    case "100":
                         CurrentCharacters[i] = Krile;
                         break;
                 }
