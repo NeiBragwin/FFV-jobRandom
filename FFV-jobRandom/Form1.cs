@@ -57,10 +57,11 @@ namespace FFV_jobRandom
 
         public void RandomizeButton_Click(object sender, EventArgs e)
         {
+            SaveMessage.Text = "";
             int index = SaveFileList.SelectedIndex;
 
             Bitmap[] TheCharacters = WhatCharacters.Characters(FFVSRMFile, index);
-            CurrentJob = WhatCharacters.RandJob(index);
+            CurrentJob = WhatCharacters.RandJob();
             int[] SpritePosition = WhatCharacters.Jobs(CurrentJob, index);
 
             CharacterFirstBox.Image = TheCharacters[0].Clone(new RectangleF(new Point(0, SpritePosition[0]), new SizeF(80, 120)), TheCharacters[0].PixelFormat);
@@ -68,8 +69,6 @@ namespace FFV_jobRandom
             CharacterThirdBox.Image = TheCharacters[2].Clone(new RectangleF(new Point(0, SpritePosition[2]), new SizeF(80, 120)), TheCharacters[2].PixelFormat);
             CharacterFourthBox.Image = TheCharacters[3].Clone(new RectangleF(new Point(0, SpritePosition[3]), new SizeF(80, 120)), TheCharacters[3].PixelFormat);
 
-            FFVSRMFile.Position = 0;
-            SaveMessage.Text = "";
             GC.Collect();
         }
 
@@ -77,39 +76,15 @@ namespace FFV_jobRandom
         {
             int index = SaveFileList.SelectedIndex;
             short[] Position = WhatCharacters.SaveFile(index);
-            int SumBytes = 0;
             
             for (int i = 0; i < 4; i++)
             {
-                FFVSRMFile.Seek(Position[i], SeekOrigin.Begin);
+                FFVSRMFile.Position = Position[i];
+                Console.WriteLine(Position[i]);
                 FFVSRMFile.WriteByte(CurrentJob[i]);
             }
 
-            FFVSRMFile.Position = 0;
-            for (int i = 0; i < 0x601; i += 2)
-            {
-                byte b1 = (byte)FFVSRMFile.ReadByte();
-                byte b2 = (byte)FFVSRMFile.ReadByte();
-                int CombinedByte = b1 << 8 | b2;
-                SumBytes += (CombinedByte);
-
-                if (SumBytes > 0xffff)
-                {
-                    var Carry = SumBytes - 0xffff;
-                    SumBytes = 0x0 + Carry;
-                }
-            }
-
-            // edit checksum
-            byte[] Checksum = new byte[2];
-            Checksum[0] = Convert.ToByte(SumBytes % 256);
-            Checksum[1] = Convert.ToByte((SumBytes - Checksum[0]) >> 8);
-
-            Console.WriteLine(Checksum[0]);
-            Console.WriteLine(Checksum[1]);
-            FFVSRMFile.Seek(0x1FF0, SeekOrigin.Begin);
-            FFVSRMFile.WriteByte(Checksum[1]);
-            FFVSRMFile.WriteByte(Checksum[0]);
+            WhatCharacters.CorrectChecksum(FFVSRMFile, index);
 
             SaveMessage.Text = "Saved!";
 

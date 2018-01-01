@@ -60,7 +60,8 @@ namespace FFV_jobRandom
             for (int i = 0; i < 4; i++)
             {
                 SRMfile.Position = CharacterPosition[i];
-                string BinaryValue = Convert.ToString(SRMfile.ReadByte(), 2).PadLeft(4, '0').Remove(0, 1);
+                string BinaryValue = Convert.ToString(SRMfile.ReadByte(), 2).PadLeft(8, '0').Remove(0, 5);
+                Console.WriteLine(BinaryValue);
                 switch (BinaryValue)
                 {
                     case "000":
@@ -161,15 +162,14 @@ namespace FFV_jobRandom
             return JobSprites;
         }
 
-        public static byte[] RandJob(int value)
+        public static byte[] RandJob()
         {
             Random rnd = new Random();
-            byte[] JobsPosition = { 1, 81, 161, 241 };
             byte[] Jobs = new byte[4];
             for (int i = 0; i < 4; i++)
             {
-                byte RandomJob = (byte)rnd.Next(22);
-                Jobs[i] = RandomJob;
+                int RandomJob = rnd.Next(0x16);
+                Jobs[i] = (byte)RandomJob;
             }
             return Jobs;
         }
@@ -204,8 +204,57 @@ namespace FFV_jobRandom
                     Position[3] = 0x15F1;
                     break;
             }
-
             return Position;
+        }
+
+        public static void CorrectChecksum(FileStream SRM, int index)
+        {
+            int SumBytes = 0;
+            int CheckPosition = 0;
+
+            switch (index)
+            {
+                case 0:
+                    SRM.Position = 0;
+                    CheckPosition = 0x1FF0;
+                    break;
+                case 1:
+                    SRM.Position = 0x700;
+                    CheckPosition = 0x1FF2;
+                    break;
+                case 2:
+                    SRM.Position = 0xE00;
+                    CheckPosition = 0x1FF4;
+                    break;
+                case 3:
+                    SRM.Position = 0x1500;
+                    CheckPosition = 0x1FF6;
+                    break;
+            }
+
+            for (int i = 0; i < 0x601; i += 2)
+            {
+                byte b1 = (byte)SRM.ReadByte();
+                byte b2 = (byte)SRM.ReadByte();
+                int CombinedByte = b1 << 8 | b2;
+                SumBytes += (CombinedByte);
+
+                if (SumBytes > 0xffff)
+                {
+                    var Carry = SumBytes - 0xffff;
+                    SumBytes = 0x0 + Carry;
+                }
+            }
+
+            // edit checksum
+            byte[] Checksum = new byte[2];
+            Checksum[0] = Convert.ToByte(SumBytes % 256);
+            Checksum[1] = Convert.ToByte((SumBytes - Checksum[0]) >> 8);
+
+            SRM.Position = CheckPosition;
+            Console.WriteLine(SRM.Position);
+            SRM.WriteByte(Checksum[1]);
+            SRM.WriteByte(Checksum[0]);
         }
     }
 }
