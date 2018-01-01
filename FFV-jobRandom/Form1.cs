@@ -16,80 +16,6 @@ namespace FFV_jobRandom
         public FileStream FFVSRMFile;
         public byte[] CurrentJob = new byte[4];
 
-        public void OpenROMbutton_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog opd = new OpenFileDialog
-            {
-                Filter = "FFV SNES ROM (*.smc)|*.smc"
-            };
-            if (opd.ShowDialog() == DialogResult.OK)
-            {
-                FFVROMFile = new FileStream(opd.FileName, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-                FFVROMFile.Seek(193910, SeekOrigin.Current);
-                if (FFVROMFile.ReadByte() == 234 && FFVROMFile.ReadByte() == 234)
-                {
-                    pathROMtextBox.Text = opd.FileName;
-                    labelCheckROM.Text = "ROM is already patched";
-                    OpenSRMbutton.Enabled = true;
-                    RestoreROMbutton.Enabled = true;
-                }
-                else
-                {
-                    pathROMtextBox.Text = opd.FileName;
-                    labelCheckROM.Text = "You can patch the ROM";
-                    patchROMbutton.Enabled = true;
-                }
-                FFVROMFile.Position = 0;
-            }
-            FFVROMFile.Close();
-        }
-
-        public void PatchROMbutton_Click(object sender, EventArgs e)
-        {
-            byte[] PatchBytes = { 234, 234 };
-            if (File.Exists(FFVROMFile.Name + ".bak"))
-            {
-                FileStream FFVBAK = new FileStream(FFVROMFile.Name + ".bak", FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-                FFVBAK.Seek(193910, SeekOrigin.Current);
-                if (FFVBAK.ReadByte() == 208 && FFVBAK.ReadByte() == 10)
-                {
-                    DialogResult BackupOverwrite = MessageBox.Show("Are you sure to overwrite the backup?", "Confirmation", MessageBoxButtons.YesNo);
-                    if (BackupOverwrite == DialogResult.Yes)
-                    {
-                        FFVBAK.Close();
-                        File.Copy(FFVROMFile.Name, FFVROMFile + ".bak", true);
-                        FileStream ROM = new FileStream(FFVROMFile.Name, FileMode.Open);
-                        ROM.Seek(193910, SeekOrigin.Current);
-                        ROM.Write(PatchBytes, 0, 2);
-                        labelCheckROM.Text = "File overwritted";
-                        ROM.Close();
-                        RestoreROMbutton.Enabled = true;
-                    }
-                }
-            } else
-            {
-                File.Copy(FFVROMFile.Name, FFVROMFile + ".bak");
-                FileStream ROM = new FileStream(FFVROMFile.Name, FileMode.Open);
-                ROM.Seek(193910, SeekOrigin.Current);
-                ROM.Write(PatchBytes, 0, 2);
-                labelCheckROM.Text = "Patching done";
-                RestoreROMbutton.Enabled = true;
-                ROM.Close();
-            }
-            GC.Collect();
-        }
-
-        public void RestoreROMbutton_Click(object sender, EventArgs e)
-        {
-            DialogResult Restore = MessageBox.Show("Restore ROM?", "Restore", MessageBoxButtons.YesNo);
-            if (Restore == DialogResult.Yes)
-            {
-                File.Copy(FFVROMFile.Name + ".bak", FFVROMFile.Name, true);
-                labelCheckROM.Text = "Restored ROM";
-            }
-            GC.Collect();
-        }
-
         public void OpenSRMbutton_Click(object sender, EventArgs e)
         {
             OpenFileDialog opd = new OpenFileDialog
@@ -151,12 +77,33 @@ namespace FFV_jobRandom
         {
             int index = SaveFileList.SelectedIndex;
             short[] Position = WhatCharacters.SaveFile(index);
+            int SumBytes = 0;
             
             for (int i = 0; i < 4; i++)
             {
                 FFVSRMFile.Seek(Position[i], SeekOrigin.Begin);
                 FFVSRMFile.WriteByte(CurrentJob[i]);
             }
+
+            FFVSRMFile.Position = 0;
+            for (int i = 0; i < 0x601; i += 2)
+            {
+                byte b1 = (byte)FFVSRMFile.ReadByte();
+                byte b2 = (byte)FFVSRMFile.ReadByte();
+                int CombinedByte = b1 << 8 | b2;
+                SumBytes += (CombinedByte);
+
+                if (SumBytes > 0xffff)
+                {
+                    var Carry = SumBytes - 0xffff;
+                    SumBytes = 0x0 + Carry;
+                }
+            }
+            SumBytes &= 0xffff;
+            Console.WriteLine((byte)SumBytes);
+            FFVSRMFile.Seek(0x1FF0, SeekOrigin.Begin);
+            FFVSRMFile.WriteByte((byte)SumBytes);
+
             SaveMessage.Text = "Saved!";
 
             FFVSRMFile.Position = 0;
