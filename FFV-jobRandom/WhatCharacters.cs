@@ -72,6 +72,9 @@ namespace FFV_jobRandom
                     case "100":
                         CurrentCharacters[i] = FFV_jobRandom.Properties.Resources.krile;
                         break;
+                    default:
+                        CurrentCharacters[i] = null;
+                        break;
                 }
             }
             return CurrentCharacters;
@@ -149,6 +152,8 @@ namespace FFV_jobRandom
                         break;
                     case 20:
                         JobSprites[i] = 150*21;
+                        break;
+                    default:
                         break;
                 }
             }
