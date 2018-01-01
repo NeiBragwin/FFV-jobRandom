@@ -78,7 +78,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Resources\bartz.png" />
     <Content Include="Resources\faris.png" />

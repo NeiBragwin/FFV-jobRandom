@@ -40,6 +40,9 @@
             this.CharacterSecondBox = new System.Windows.Forms.PictureBox();
             this.CharacterThirdBox = new System.Windows.Forms.PictureBox();
             this.CharacterFourthBox = new System.Windows.Forms.PictureBox();
+            this.RandomizeButton = new System.Windows.Forms.Button();
+            this.SaveSRMbutton = new System.Windows.Forms.Button();
+            this.SaveMessage = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.CharacterFirstBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CharacterSecondBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CharacterThirdBox)).BeginInit();
@@ -125,7 +128,7 @@
             // 
             this.CharacterFirstBox.Location = new System.Drawing.Point(15, 119);
             this.CharacterFirstBox.Name = "CharacterFirstBox";
-            this.CharacterFirstBox.Size = new System.Drawing.Size(84, 126);
+            this.CharacterFirstBox.Size = new System.Drawing.Size(80, 120);
             this.CharacterFirstBox.TabIndex = 8;
             this.CharacterFirstBox.TabStop = false;
             // 
@@ -133,7 +136,7 @@
             // 
             this.CharacterSecondBox.Location = new System.Drawing.Point(112, 119);
             this.CharacterSecondBox.Name = "CharacterSecondBox";
-            this.CharacterSecondBox.Size = new System.Drawing.Size(84, 126);
+            this.CharacterSecondBox.Size = new System.Drawing.Size(80, 120);
             this.CharacterSecondBox.TabIndex = 8;
             this.CharacterSecondBox.TabStop = false;
             // 
@@ -141,7 +144,7 @@
             // 
             this.CharacterThirdBox.Location = new System.Drawing.Point(210, 119);
             this.CharacterThirdBox.Name = "CharacterThirdBox";
-            this.CharacterThirdBox.Size = new System.Drawing.Size(84, 126);
+            this.CharacterThirdBox.Size = new System.Drawing.Size(80, 120);
             this.CharacterThirdBox.TabIndex = 8;
             this.CharacterThirdBox.TabStop = false;
             // 
@@ -149,15 +152,47 @@
             // 
             this.CharacterFourthBox.Location = new System.Drawing.Point(307, 119);
             this.CharacterFourthBox.Name = "CharacterFourthBox";
-            this.CharacterFourthBox.Size = new System.Drawing.Size(84, 126);
+            this.CharacterFourthBox.Size = new System.Drawing.Size(80, 120);
             this.CharacterFourthBox.TabIndex = 8;
             this.CharacterFourthBox.TabStop = false;
+            // 
+            // RandomizeButton
+            // 
+            this.RandomizeButton.Location = new System.Drawing.Point(112, 252);
+            this.RandomizeButton.Name = "RandomizeButton";
+            this.RandomizeButton.Size = new System.Drawing.Size(75, 23);
+            this.RandomizeButton.TabIndex = 9;
+            this.RandomizeButton.Text = "Randomize";
+            this.RandomizeButton.UseVisualStyleBackColor = true;
+            this.RandomizeButton.Click += new System.EventHandler(this.RandomizeButton_Click);
+            // 
+            // SaveSRMbutton
+            // 
+            this.SaveSRMbutton.Location = new System.Drawing.Point(215, 252);
+            this.SaveSRMbutton.Name = "SaveSRMbutton";
+            this.SaveSRMbutton.Size = new System.Drawing.Size(75, 23);
+            this.SaveSRMbutton.TabIndex = 10;
+            this.SaveSRMbutton.Text = "Save";
+            this.SaveSRMbutton.UseVisualStyleBackColor = true;
+            this.SaveSRMbutton.Click += new System.EventHandler(this.SaveSRMbutton_Click);
+            // 
+            // SaveMessage
+            // 
+            this.SaveMessage.AutoSize = true;
+            this.SaveMessage.Location = new System.Drawing.Point(328, 257);
+            this.SaveMessage.Name = "SaveMessage";
+            this.SaveMessage.Size = new System.Drawing.Size(0, 13);
+            this.SaveMessage.TabIndex = 11;
+            this.SaveMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(406, 280);
+            this.ClientSize = new System.Drawing.Size(406, 287);
+            this.Controls.Add(this.SaveMessage);
+            this.Controls.Add(this.SaveSRMbutton);
+            this.Controls.Add(this.RandomizeButton);
             this.Controls.Add(this.CharacterFourthBox);
             this.Controls.Add(this.CharacterThirdBox);
             this.Controls.Add(this.CharacterSecondBox);
@@ -197,6 +232,9 @@
         private System.Windows.Forms.PictureBox CharacterSecondBox;
         private System.Windows.Forms.PictureBox CharacterThirdBox;
         private System.Windows.Forms.PictureBox CharacterFourthBox;
+        private System.Windows.Forms.Button RandomizeButton;
+        private System.Windows.Forms.Button SaveSRMbutton;
+        private System.Windows.Forms.Label SaveMessage;
     }
 }
 

@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Reflection;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 
 namespace FFV_jobRandom
 {
@@ -20,8 +12,9 @@ namespace FFV_jobRandom
             InitializeComponent();
         }
 
-        public static string FFVROMFile = "";
-        public static string FFVSRMFile = "";
+        public FileStream FFVROMFile;
+        public FileStream FFVSRMFile;
+        public byte[] CurrentJob = new byte[4];
 
         public void OpenROMbutton_Click(object sender, EventArgs e)
         {
@@ -31,32 +24,31 @@ namespace FFV_jobRandom
             };
             if (opd.ShowDialog() == DialogResult.OK)
             {
-                FFVROMFile = opd.FileName;
-                FileStream ROM = new FileStream(FFVROMFile, FileMode.Open);
-                ROM.Seek(193910, SeekOrigin.Current);
-                if (ROM.ReadByte() == 234 && ROM.ReadByte() == 234)
+                FFVROMFile = new FileStream(opd.FileName, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+                FFVROMFile.Seek(193910, SeekOrigin.Current);
+                if (FFVROMFile.ReadByte() == 234 && FFVROMFile.ReadByte() == 234)
                 {
-                    pathROMtextBox.Text = FFVROMFile;
+                    pathROMtextBox.Text = opd.FileName;
                     labelCheckROM.Text = "ROM is already patched";
                     OpenSRMbutton.Enabled = true;
                     RestoreROMbutton.Enabled = true;
                 }
                 else
                 {
-                    pathROMtextBox.Text = FFVROMFile;
+                    pathROMtextBox.Text = opd.FileName;
                     labelCheckROM.Text = "You can patch the ROM";
                     patchROMbutton.Enabled = true;
                 }
-                ROM.Close();
+                FFVROMFile.Position = 0;
             }
         }
 
         public void PatchROMbutton_Click(object sender, EventArgs e)
         {
             byte[] PatchBytes = { 234, 234 };
-            if (File.Exists(FFVROMFile + ".bak"))
+            if (File.Exists(FFVROMFile.Name + ".bak"))
             {
-                FileStream FFVBAK = new FileStream(FFVROMFile + ".bak", FileMode.Open);
+                FileStream FFVBAK = new FileStream(FFVROMFile.Name + ".bak", FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
                 FFVBAK.Seek(193910, SeekOrigin.Current);
                 if (FFVBAK.ReadByte() == 208 && FFVBAK.ReadByte() == 10)
                 {
@@ -64,8 +56,8 @@ namespace FFV_jobRandom
                     if (BackupOverwrite == DialogResult.Yes)
                     {
                         FFVBAK.Close();
-                        File.Copy(FFVROMFile, FFVROMFile + ".bak", true);
-                        FileStream ROM = new FileStream(FFVROMFile, FileMode.Open);
+                        File.Copy(FFVROMFile.Name, FFVROMFile + ".bak", true);
+                        FileStream ROM = new FileStream(FFVROMFile.Name, FileMode.Open);
                         ROM.Seek(193910, SeekOrigin.Current);
                         ROM.Write(PatchBytes, 0, 2);
                         labelCheckROM.Text = "File overwritted";
@@ -75,8 +67,8 @@ namespace FFV_jobRandom
                 }
             } else
             {
-                File.Copy(FFVROMFile, FFVROMFile + ".bak");
-                FileStream ROM = new FileStream(FFVROMFile, FileMode.Open);
+                File.Copy(FFVROMFile.Name, FFVROMFile + ".bak");
+                FileStream ROM = new FileStream(FFVROMFile.Name, FileMode.Open);
                 ROM.Seek(193910, SeekOrigin.Current);
                 ROM.Write(PatchBytes, 0, 2);
                 labelCheckROM.Text = "Patching done";
@@ -85,59 +77,76 @@ namespace FFV_jobRandom
             }
         }
 
-        private void RestoreROMbutton_Click(object sender, EventArgs e)
+        public void RestoreROMbutton_Click(object sender, EventArgs e)
         {
             DialogResult Restore = MessageBox.Show("Restore ROM?", "Restore", MessageBoxButtons.YesNo);
             if (Restore == DialogResult.Yes)
             {
-                File.Copy(FFVROMFile + ".bak", FFVROMFile, true);
+                File.Copy(FFVROMFile.Name + ".bak", FFVROMFile.Name, true);
                 labelCheckROM.Text = "Restored ROM";
             }
         }
 
-        private void OpenSRMbutton_Click(object sender, EventArgs e)
+        public void OpenSRMbutton_Click(object sender, EventArgs e)
         {
+            byte[] Position = { 1, 81, 161, 241 };
             OpenFileDialog opd = new OpenFileDialog
             {
                 Filter = "SRM file (*.srm)|*.srm|saveRAM (*.saveRAM)|*.saveRAM"
             };
             if (opd.ShowDialog() == DialogResult.OK)
             {
-                FFVSRMFile = opd.FileName;
-                FileStream SRM = new FileStream(FFVSRMFile, FileMode.Open);
-                SRM.Seek(0, SeekOrigin.Begin);
+                FFVSRMFile = new FileStream(opd.FileName, FileMode.Open);
+                FFVSRMFile.Seek(0, SeekOrigin.Begin);
 
                 PathToSRMtextBox.Text = opd.FileName;
 
-                string[] characters = { "Bartz", "Lenna", "Faris" };
+                Bitmap[] TheCharacters = WhatCharacters.Characters(FFVSRMFile);
+                
+                for (int i = 0; i < 4; i++)
+                {
+                    FFVSRMFile.Seek(Position[i], SeekOrigin.Begin);
+                    CurrentJob[i] = (byte)FFVSRMFile.ReadByte();
+                }
 
-                WhatCharacters.Characters(characters);
+                int[] SpritePosition = WhatCharacters.Jobs(CurrentJob);
+
+                CharacterFirstBox.Image = TheCharacters[0].Clone(new RectangleF(new Point(0, SpritePosition[0]), new SizeF(80, 120)), TheCharacters[0].PixelFormat);
+                CharacterSecondBox.Image = TheCharacters[1].Clone(new RectangleF(new Point(0, SpritePosition[1]), new SizeF(80, 120)), TheCharacters[1].PixelFormat);
+                CharacterThirdBox.Image = TheCharacters[2].Clone(new RectangleF(new Point(0, SpritePosition[2]), new SizeF(80, 120)), TheCharacters[2].PixelFormat);
+                CharacterFourthBox.Image = TheCharacters[3].Clone(new RectangleF(new Point(0, SpritePosition[3]), new SizeF(80, 120)), TheCharacters[3].PixelFormat);
             }
+
+            FFVSRMFile.Position = 0;
         }
 
-        public static Bitmap ResizeImage(Image image, int width, int height)
+
+        public void RandomizeButton_Click(object sender, EventArgs e)
         {
-            var destRect = new Rectangle(0, 0, width, height);
-            var destImage = new Bitmap(width, height);
+            Bitmap[] TheCharacters = WhatCharacters.Characters(FFVSRMFile);
+            CurrentJob = WhatCharacters.RandJob();
+            int[] SpritePosition = WhatCharacters.Jobs(CurrentJob);
 
-            destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+            CharacterFirstBox.Image = TheCharacters[0].Clone(new RectangleF(new Point(0, SpritePosition[0]), new SizeF(80, 120)), TheCharacters[0].PixelFormat);
+            CharacterSecondBox.Image = TheCharacters[1].Clone(new RectangleF(new Point(0, SpritePosition[1]), new SizeF(80, 120)), TheCharacters[1].PixelFormat);
+            CharacterThirdBox.Image = TheCharacters[2].Clone(new RectangleF(new Point(0, SpritePosition[2]), new SizeF(80, 120)), TheCharacters[2].PixelFormat);
+            CharacterFourthBox.Image = TheCharacters[3].Clone(new RectangleF(new Point(0, SpritePosition[3]), new SizeF(80, 120)), TheCharacters[3].PixelFormat);
 
-            using (var graphics = Graphics.FromImage(destImage))
+            FFVSRMFile.Position = 0;
+            SaveMessage.Text = "";
+        }
+
+        private void SaveSRMbutton_Click(object sender, EventArgs e)
+        {
+            byte[] Position = { 1, 81, 161, 241 };
+            for (int i = 0; i < 4; i++)
             {
-                graphics.CompositingMode = CompositingMode.SourceCopy;
-                graphics.CompositingQuality = CompositingQuality.HighQuality;
-                graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-                graphics.SmoothingMode = SmoothingMode.HighQuality;
-                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-                using (var wrapMode = new ImageAttributes())
-                {
-                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-                    graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
-                }
+                FFVSRMFile.Seek(Position[i], SeekOrigin.Begin);
+                FFVSRMFile.WriteByte((byte)CurrentJob[i]);
             }
+            SaveMessage.Text = "Saved!";
 
-            return destImage;
+            FFVSRMFile.Position = 0;
         }
     }
 }
