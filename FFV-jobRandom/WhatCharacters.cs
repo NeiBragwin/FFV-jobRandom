@@ -16,12 +16,6 @@ namespace FFV_jobRandom
 
     public class WhatCharacters
     {
-        public static Bitmap Bartz = FFV_jobRandom.Properties.Resources.bartz;
-        public static Bitmap Faris = FFV_jobRandom.Properties.Resources.faris;
-        public static Bitmap Galuf = FFV_jobRandom.Properties.Resources.galuf;
-        public static Bitmap Krile = FFV_jobRandom.Properties.Resources.krile;
-        public static Bitmap Lenna = FFV_jobRandom.Properties.Resources.lenna;
-
         public static short[] JobsPosition;
         public static short[] CharacterPosition = new short[4];
 
@@ -61,23 +55,22 @@ namespace FFV_jobRandom
             {
                 SRMfile.Position = CharacterPosition[i];
                 string BinaryValue = Convert.ToString(SRMfile.ReadByte(), 2).PadLeft(8, '0').Remove(0, 5);
-                Console.WriteLine(BinaryValue);
                 switch (BinaryValue)
                 {
                     case "000":
-                        CurrentCharacters[i] = Bartz;
+                        CurrentCharacters[i] = FFV_jobRandom.Properties.Resources.bartz;
                         break;
                     case "001":
-                        CurrentCharacters[i] = Lenna;
+                        CurrentCharacters[i] = FFV_jobRandom.Properties.Resources.faris;
                         break;
                     case "010":
-                        CurrentCharacters[i] = Galuf;
+                        CurrentCharacters[i] = FFV_jobRandom.Properties.Resources.galuf;
                         break;
                     case "011":
-                        CurrentCharacters[i] = Faris;
+                        CurrentCharacters[i] = FFV_jobRandom.Properties.Resources.faris;
                         break;
                     case "100":
-                        CurrentCharacters[i] = Krile;
+                        CurrentCharacters[i] = FFV_jobRandom.Properties.Resources.krile;
                         break;
                 }
             }
@@ -252,7 +245,6 @@ namespace FFV_jobRandom
             Checksum[1] = Convert.ToByte((SumBytes - Checksum[0]) >> 8);
 
             SRM.Position = CheckPosition;
-            Console.WriteLine(SRM.Position);
             SRM.WriteByte(Checksum[1]);
             SRM.WriteByte(Checksum[0]);
         }

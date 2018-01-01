@@ -29,7 +29,6 @@ namespace FFV_jobRandom
                 SaveFileList.Enabled = true;
                 SaveFileList.SelectedIndex = 0;
                 int index = SaveFileList.SelectedIndex;
-
                 short[] Position = WhatCharacters.SaveFile(index);
                 PathToSRMtextBox.Text = opd.FileName;
 
@@ -80,7 +79,6 @@ namespace FFV_jobRandom
             for (int i = 0; i < 4; i++)
             {
                 FFVSRMFile.Position = Position[i];
-                Console.WriteLine(Position[i]);
                 FFVSRMFile.WriteByte(CurrentJob[i]);
             }
 
