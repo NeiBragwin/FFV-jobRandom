@@ -22,12 +22,40 @@ namespace FFV_jobRandom
         public static Bitmap Krile = FFV_jobRandom.Properties.Resources.krile;
         public static Bitmap Lenna = FFV_jobRandom.Properties.Resources.lenna;
 
-        public static byte[] CharacterPosition = { 0, 80, 160, 240 };
-        public static byte[] JobsPosition = { 1, 81, 161, 241 };
+        public static short[] JobsPosition;
+        public static short[] CharacterPosition = new short[4];
 
         public static Bitmap[] CurrentCharacters = new Bitmap[4];
-        public static Bitmap[] Characters(FileStream SRMfile)
+
+        public static Bitmap[] Characters(FileStream SRMfile, int index)
         {
+            switch (index)
+            {
+                case 0:
+                    CharacterPosition[0] = 0x0;
+                    CharacterPosition[1] = 0x50;
+                    CharacterPosition[2] = 0xA0;
+                    CharacterPosition[3] = 0xF0;
+                    break;
+                case 1:
+                    CharacterPosition[0] = 0x700;
+                    CharacterPosition[1] = 0x750;
+                    CharacterPosition[2] = 0x7A0;
+                    CharacterPosition[3] = 0x7F0;
+                    break;
+                case 2:
+                    CharacterPosition[0] = 0xE00;
+                    CharacterPosition[1] = 0xE50;
+                    CharacterPosition[2] = 0xEA0;
+                    CharacterPosition[3] = 0xEF0;
+                    break;
+                case 3:
+                    CharacterPosition[0] = 0x1500;
+                    CharacterPosition[1] = 0x1550;
+                    CharacterPosition[2] = 0x15A0;
+                    CharacterPosition[3] = 0x15F0;
+                    break;
+            }
             for (int i = 0; i < 4; i++)
             {
                 SRMfile.Seek(CharacterPosition[i], SeekOrigin.Begin);
@@ -68,7 +96,7 @@ namespace FFV_jobRandom
             return CurrentCharacters;
         }
 
-        public static int[] Jobs(byte[] JobValue)
+        public static int[] Jobs(byte[] JobValue, int index)
         {
             int[] JobSprites = new int[4];
             for (int i = 0; i < 4; i++)
@@ -146,7 +174,7 @@ namespace FFV_jobRandom
             return JobSprites;
         }
 
-        public static byte[] RandJob()
+        public static byte[] RandJob(int value)
         {
             Random rnd = new Random();
             byte[] JobsPosition = { 1, 81, 161, 241 };
@@ -157,6 +185,40 @@ namespace FFV_jobRandom
                 Jobs[i] = RandomJob;
             }
             return Jobs;
+        }
+
+        public static short[] SaveFile(int index)
+        {
+            short[] Position = new short[4];
+            switch (index)
+            {
+                case 0:
+                    Position[0] = 0x1;
+                    Position[1] = 0x51;
+                    Position[2] = 0xA1;
+                    Position[3] = 0xF1;
+                    break;
+                case 1:
+                    Position[0] = 0x701;
+                    Position[1] = 0x751;
+                    Position[2] = 0x7A1;
+                    Position[3] = 0x7F1;
+                    break;
+                case 2:
+                    Position[0] = 0xE01;
+                    Position[1] = 0xE51;
+                    Position[2] = 0xEA1;
+                    Position[3] = 0xEF1;
+                    break;
+                case 3:
+                    Position[0] = 0x1501;
+                    Position[1] = 0x1551;
+                    Position[2] = 0x15A1;
+                    Position[3] = 0x15F1;
+                    break;
+            }
+
+            return Position;
         }
     }
 }

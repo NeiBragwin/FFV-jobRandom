@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.patchROMbutton = new System.Windows.Forms.Button();
             this.pathROMtextBox = new System.Windows.Forms.TextBox();
             this.openROMbutton = new System.Windows.Forms.Button();
@@ -36,17 +37,18 @@
             this.OpenSRMbutton = new System.Windows.Forms.Button();
             this.RestoreROMbutton = new System.Windows.Forms.Button();
             this.RestoreSRMbutton = new System.Windows.Forms.Button();
-            this.CharacterFirstBox = new System.Windows.Forms.PictureBox();
-            this.CharacterSecondBox = new System.Windows.Forms.PictureBox();
-            this.CharacterThirdBox = new System.Windows.Forms.PictureBox();
-            this.CharacterFourthBox = new System.Windows.Forms.PictureBox();
             this.RandomizeButton = new System.Windows.Forms.Button();
             this.SaveSRMbutton = new System.Windows.Forms.Button();
             this.SaveMessage = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.CharacterFirstBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CharacterSecondBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CharacterThirdBox)).BeginInit();
+            this.CharacterFourthBox = new System.Windows.Forms.PictureBox();
+            this.CharacterThirdBox = new System.Windows.Forms.PictureBox();
+            this.CharacterSecondBox = new System.Windows.Forms.PictureBox();
+            this.CharacterFirstBox = new System.Windows.Forms.PictureBox();
+            this.SaveFileList = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.CharacterFourthBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CharacterThirdBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CharacterSecondBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CharacterFirstBox)).BeginInit();
             this.SuspendLayout();
             // 
             // patchROMbutton
@@ -123,44 +125,13 @@
             this.RestoreSRMbutton.TabIndex = 7;
             this.RestoreSRMbutton.Text = "Restore SRM";
             this.RestoreSRMbutton.UseVisualStyleBackColor = true;
-            // 
-            // CharacterFirstBox
-            // 
-            this.CharacterFirstBox.Location = new System.Drawing.Point(15, 119);
-            this.CharacterFirstBox.Name = "CharacterFirstBox";
-            this.CharacterFirstBox.Size = new System.Drawing.Size(80, 120);
-            this.CharacterFirstBox.TabIndex = 8;
-            this.CharacterFirstBox.TabStop = false;
-            // 
-            // CharacterSecondBox
-            // 
-            this.CharacterSecondBox.Location = new System.Drawing.Point(112, 119);
-            this.CharacterSecondBox.Name = "CharacterSecondBox";
-            this.CharacterSecondBox.Size = new System.Drawing.Size(80, 120);
-            this.CharacterSecondBox.TabIndex = 8;
-            this.CharacterSecondBox.TabStop = false;
-            // 
-            // CharacterThirdBox
-            // 
-            this.CharacterThirdBox.Location = new System.Drawing.Point(210, 119);
-            this.CharacterThirdBox.Name = "CharacterThirdBox";
-            this.CharacterThirdBox.Size = new System.Drawing.Size(80, 120);
-            this.CharacterThirdBox.TabIndex = 8;
-            this.CharacterThirdBox.TabStop = false;
-            // 
-            // CharacterFourthBox
-            // 
-            this.CharacterFourthBox.Location = new System.Drawing.Point(307, 119);
-            this.CharacterFourthBox.Name = "CharacterFourthBox";
-            this.CharacterFourthBox.Size = new System.Drawing.Size(80, 120);
-            this.CharacterFourthBox.TabIndex = 8;
-            this.CharacterFourthBox.TabStop = false;
+            this.RestoreSRMbutton.Click += new System.EventHandler(this.RestoreSRMbutton_Click);
             // 
             // RandomizeButton
             // 
-            this.RandomizeButton.Location = new System.Drawing.Point(112, 252);
+            this.RandomizeButton.Location = new System.Drawing.Point(112, 253);
             this.RandomizeButton.Name = "RandomizeButton";
-            this.RandomizeButton.Size = new System.Drawing.Size(75, 23);
+            this.RandomizeButton.Size = new System.Drawing.Size(80, 23);
             this.RandomizeButton.TabIndex = 9;
             this.RandomizeButton.Text = "Randomize";
             this.RandomizeButton.UseVisualStyleBackColor = true;
@@ -168,9 +139,9 @@
             // 
             // SaveSRMbutton
             // 
-            this.SaveSRMbutton.Location = new System.Drawing.Point(215, 252);
+            this.SaveSRMbutton.Location = new System.Drawing.Point(210, 253);
             this.SaveSRMbutton.Name = "SaveSRMbutton";
-            this.SaveSRMbutton.Size = new System.Drawing.Size(75, 23);
+            this.SaveSRMbutton.Size = new System.Drawing.Size(80, 23);
             this.SaveSRMbutton.TabIndex = 10;
             this.SaveSRMbutton.Text = "Save";
             this.SaveSRMbutton.UseVisualStyleBackColor = true;
@@ -185,11 +156,60 @@
             this.SaveMessage.TabIndex = 11;
             this.SaveMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // CharacterFourthBox
+            // 
+            this.CharacterFourthBox.Location = new System.Drawing.Point(307, 119);
+            this.CharacterFourthBox.Name = "CharacterFourthBox";
+            this.CharacterFourthBox.Size = new System.Drawing.Size(80, 120);
+            this.CharacterFourthBox.TabIndex = 8;
+            this.CharacterFourthBox.TabStop = false;
+            // 
+            // CharacterThirdBox
+            // 
+            this.CharacterThirdBox.Location = new System.Drawing.Point(210, 119);
+            this.CharacterThirdBox.Name = "CharacterThirdBox";
+            this.CharacterThirdBox.Size = new System.Drawing.Size(80, 120);
+            this.CharacterThirdBox.TabIndex = 8;
+            this.CharacterThirdBox.TabStop = false;
+            // 
+            // CharacterSecondBox
+            // 
+            this.CharacterSecondBox.Location = new System.Drawing.Point(112, 119);
+            this.CharacterSecondBox.Name = "CharacterSecondBox";
+            this.CharacterSecondBox.Size = new System.Drawing.Size(80, 120);
+            this.CharacterSecondBox.TabIndex = 8;
+            this.CharacterSecondBox.TabStop = false;
+            // 
+            // CharacterFirstBox
+            // 
+            this.CharacterFirstBox.Location = new System.Drawing.Point(15, 119);
+            this.CharacterFirstBox.Name = "CharacterFirstBox";
+            this.CharacterFirstBox.Size = new System.Drawing.Size(80, 120);
+            this.CharacterFirstBox.TabIndex = 8;
+            this.CharacterFirstBox.TabStop = false;
+            // 
+            // SaveFileList
+            // 
+            this.SaveFileList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.SaveFileList.Enabled = false;
+            this.SaveFileList.FormattingEnabled = true;
+            this.SaveFileList.Items.AddRange(new object[] {
+            "Save 1",
+            "Save 2",
+            "Save 3",
+            "Save 4"});
+            this.SaveFileList.Location = new System.Drawing.Point(15, 254);
+            this.SaveFileList.Name = "SaveFileList";
+            this.SaveFileList.Size = new System.Drawing.Size(80, 21);
+            this.SaveFileList.TabIndex = 13;
+            this.SaveFileList.SelectedIndexChanged += new System.EventHandler(this.SaveFileList_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(406, 287);
+            this.Controls.Add(this.SaveFileList);
             this.Controls.Add(this.SaveMessage);
             this.Controls.Add(this.SaveSRMbutton);
             this.Controls.Add(this.RandomizeButton);
@@ -205,14 +225,15 @@
             this.Controls.Add(this.openROMbutton);
             this.Controls.Add(this.pathROMtextBox);
             this.Controls.Add(this.patchROMbutton);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "FFV Job Randomizer";
-            ((System.ComponentModel.ISupportInitialize)(this.CharacterFirstBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CharacterSecondBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CharacterThirdBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CharacterFourthBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CharacterThirdBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CharacterSecondBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CharacterFirstBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -235,6 +256,7 @@
         private System.Windows.Forms.Button RandomizeButton;
         private System.Windows.Forms.Button SaveSRMbutton;
         private System.Windows.Forms.Label SaveMessage;
+        private System.Windows.Forms.ComboBox SaveFileList;
     }
 }
 
