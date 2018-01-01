@@ -61,7 +61,7 @@ namespace FFV_jobRandom
                         CurrentCharacters[i] = FFV_jobRandom.Properties.Resources.bartz;
                         break;
                     case "001":
-                        CurrentCharacters[i] = FFV_jobRandom.Properties.Resources.faris;
+                        CurrentCharacters[i] = FFV_jobRandom.Properties.Resources.lenna;
                         break;
                     case "010":
                         CurrentCharacters[i] = FFV_jobRandom.Properties.Resources.galuf;
