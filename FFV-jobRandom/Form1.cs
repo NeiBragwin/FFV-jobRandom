@@ -99,10 +99,17 @@ namespace FFV_jobRandom
                     SumBytes = 0x0 + Carry;
                 }
             }
-            SumBytes &= 0xffff;
-            Console.WriteLine((byte)SumBytes);
+
+            // edit checksum
+            byte[] Checksum = new byte[2];
+            Checksum[0] = Convert.ToByte(SumBytes % 256);
+            Checksum[1] = Convert.ToByte((SumBytes - Checksum[0]) >> 8);
+
+            Console.WriteLine(Checksum[0]);
+            Console.WriteLine(Checksum[1]);
             FFVSRMFile.Seek(0x1FF0, SeekOrigin.Begin);
-            FFVSRMFile.WriteByte((byte)SumBytes);
+            FFVSRMFile.WriteByte(Checksum[1]);
+            FFVSRMFile.WriteByte(Checksum[0]);
 
             SaveMessage.Text = "Saved!";
 
